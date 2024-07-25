@@ -3,6 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 import Header from './src/components/Header/Header';
 import Tasks from './src/components/Tasks/Tasks';
 import Form from './src/components/Form/Form';
+import Settings from './src/components/Settings/Settings'
 import styles from './src/styles/main';
 import { useState, useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
@@ -12,6 +13,22 @@ import { AntDesign } from '@expo/vector-icons';
 import AppLoader from './src/components/AppLoader';
 import { Text } from 'react-native'
 import { save } from './src/database';
+import * as Notifications from 'expo-notifications';
+
+// Handle Notification display.
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: true
+  }),
+  handleSuccess: (notificationId) => {
+    console.log('handler Success', notificationId)
+  },
+  handleError: (notificationId, error) => {
+    console.log("Handle Error", error)
+  }
+})
 
 
 
@@ -135,6 +152,17 @@ export default function App() {
                   />
                 )}
               </Tab.Screen>
+              <Tab.Screen
+                name='Settings'
+                component={Settings}
+                options={{
+                  tabBarIcon: ({ size, color }) => (
+                    <AntDesign name="setting" size={size} color={color} />
+                  ),
+                }}
+              />
+
+              {/* </Tab.Screen> */}
             </Tab.Navigator>
           )}
         </View>
