@@ -19,11 +19,6 @@ export default function Settings() {
         } else {
             setReminder(false)
             setSchedule(await getSchedule())
-            // const canceled = await cancelReminder()
-            // if (canceled) {
-
-            //     setSchedule(await getSchedule())
-            // }
 
         }
     }
@@ -59,12 +54,6 @@ export default function Settings() {
                 </Text>
             </View>
 
-            {/* {schedule.map((item, index) => (
-                    <Text key={index} style={styles.logs.text}>
-                        {item.type}
-                    </Text>
-                ))}
-            </View> */}
         </View>
 
     )
@@ -122,18 +111,6 @@ async function scheduledReminder() {
     }
 }
 
-// async function cancelReminder() {
-//     console.log("Cancel for", Platform.OS)
-//     let canceled = false;
-//     const schedule = await getSchedule()
-//     for (const item of schedule) {
-//         if (item.type === 'reminder') {
-//             await Notifications.cancelAllScheduledNotificationsAsync(item.id)
-//             canceled = true;
-//         }
-//     }
-//     return canceled
-// }
 
 async function getSchedule() {
     const scheduleNotifications = await Notifications.getAllScheduledNotificationsAsync();
