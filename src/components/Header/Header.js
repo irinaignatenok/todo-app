@@ -1,7 +1,7 @@
 import { View, Text } from 'react-native';
 import styles from './styles';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { formBackground, secondaryColor } from './../../includes/variables'
+import { formBackground } from './../../includes/variables'
 
 export default function Header() {
     return (

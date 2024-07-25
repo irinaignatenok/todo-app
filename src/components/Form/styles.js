@@ -1,11 +1,13 @@
 import { StyleSheet, Platform } from "react-native";
-import { formBackground, secondaryColor, primaryColor } from './../../includes/variables'
+import { formBackground, secondaryColor, taskBackground, primaryColor } from './../../includes/variables'
 const styles = StyleSheet.create({
     container: {
         alignSelf: 'stretch',
         // backgroundColor: '#f7f2fa',
-        backgroundColor: formBackground,
-        padding: 10
+        backgroundColor: taskBackground,
+        padding: 10,
+        flex: 1,
+
     },
     errorContainer: {
         borderLeftWidth: 5,
@@ -15,7 +17,7 @@ const styles = StyleSheet.create({
         borderColor: '#c00',
         borderLeftColor: '#c00',
         padding: 7,
-        backgroundColor: '#fff'
+        backgroundColor: secondaryColor
     },
     errorMessage: {
         color: '#c00'
@@ -29,8 +31,8 @@ const styles = StyleSheet.create({
         borderColor: '#ccc',
         paddingHorizontal: 10,
         paddingVertical: 7,
-        marginTop: 5,
-        backgroundColor: '#fff'
+        marginTop: 10,
+        backgroundColor: secondaryColor
     },
     switch: {
         flexDirection: 'row',
@@ -38,12 +40,22 @@ const styles = StyleSheet.create({
         paddingTop: Platform.OS === 'ios' ? 10 : 0
     },
     switchText: {
-        color: '#fff',
+        color: formBackground,
         fontWeight: 'bold',
         marginRight: Platform.OS === 'ios' ? 10 : 0
     },
     btn: {
         color: '#fff'
+    },
+    loadingContainer: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    loadingText: {
+        color: '#444',
+        fontSize: 21,
+        marginTop: 10
     }
 })
 

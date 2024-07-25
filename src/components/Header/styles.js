@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { formBackground, primaryColor, secondaryColor } from './../../includes/variables'
+import { formBackground } from './../../includes/variables'
 
 
 

@@ -1,22 +1,57 @@
-import { View, Text, TextInput, Switch, Button, Keyboard, Pressable } from 'react-native';
+import { View, Text, TextInput, Switch, Button, Keyboard, Pressable, ActivityIndicator } from 'react-native';
 import styles from './styles';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as database from '../../database/index';
+import { primaryColor } from '../../includes/variables'
 
-export default function Form(props) {
-    const handleAddPress = () => {
-        if (taskDescription) {
-            props.onAddTask(taskDescription, taskDone);
+export default function Form({ navigation, onAddTask }) {
 
-            setErrorMessage(null);
-            setTaskDescription('');
-            setTaskDone(false);
+    // States
+    const [taskDescription, setTaskDescription] = useState('');
 
-            Keyboard.dismiss()
-        } else {
-            setErrorMessage('The description is required')
+    const [taskDone, setTaskDone] = useState(false);
+
+    const [errorMessage, setErrorMessage] = useState([]);
+    const [tasks, setTasks] = useState([]);
+    const [savingData, setSavingData] = useState(false);
+
+    const handleAddPress = async () => {
+        const validate = [];
+        // Validate the data.
+        if (taskDescription === "") {
+            validate.push('The description is required.');
         }
 
-    }
+        if (validate.length > 0) {
+            setErrorMessage(validate);
+        } else {
+
+            // Call the passed in onAddTask function
+            setSavingData(true); // Show loading image
+            await onAddTask(taskDescription, taskDone);
+            setSavingData(false); // Remove loading image
+
+            // Clear up the form
+            setTaskDescription('');
+            setTaskDone(false);
+            setErrorMessage([]);
+            // Go back to the list screen
+            navigation.goBack();
+        }
+    };
+
+
+    useEffect(() => {
+        const getTasks = async () => {
+            try {
+                const tasksFromFirebase = await database.load();
+                setTasks([...tasks, tasksFromFirebase])
+            } catch (error) {
+                console.error('Error fetching tasks:', error);
+            }
+        }
+        getTasks();
+    }, [])
     const handleLabelPressed = () => {
         setTaskDone(!taskDone)
     }
@@ -28,18 +63,22 @@ export default function Form(props) {
     const handleStatusChange = (value) => {
         setTaskDone(value)
     }
-    // States
-    const [taskDescription, setTaskDescription] = useState('');
-
-    const [taskDone, setTaskDone] = useState(false);
-
-    const [errorMessage, setErrorMessage] = useState(null);
 
 
+    if (savingData) {
+        return (
+            <View style={styles.loadingContainer}>
+                <ActivityIndicator size='large' color={primaryColor} />
+                <Text style={styles.loadingText}>Saving Data!</Text>
+                <Text style={styles.loadingText}>Please, wait ...</Text>
+            </View>
+
+        )
+    }
     return (
 
         <View style={styles.container}>
-            {errorMessage && (
+            {errorMessage.length > 0 && (
                 <View style={styles.errorContainer}>
                     <Text style={styles.errorTitle}>Attention:</Text>
                     <Text style={styles.errorMessage}>{errorMessage}</Text>
