@@ -96,7 +96,8 @@ async function scheduledReminder() {
 
             },
             trigger: {
-                second: 5,
+                hour: 8,
+                minute: 0,
                 repeats: true
             }
         })
