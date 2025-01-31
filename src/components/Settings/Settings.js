@@ -17,9 +17,11 @@ export default function Settings() {
                 setSchedule(await getSchedule())
             }
         } else {
-            setReminder(false)
-            setSchedule(await getSchedule())
-
+            const cancelled = await cancelReminder()
+            if (cancelled) {
+                setReminder(false)
+                setSchedule(await getSchedule())
+            }
         }
     }
 
@@ -110,6 +112,19 @@ async function scheduledReminder() {
     catch {
         return false
     }
+}
+
+async function cancelReminder() {
+    let canceled = false
+    const schedule = await getSchedule()
+
+    for (const item of schedule) {
+        if (item.type === 'reminder') {
+            await Notifications.cancelAllScheduledNotificationsAsync(item.id)
+            canceled = true;
+        }
+    }
+    return canceled
 }
 
 
